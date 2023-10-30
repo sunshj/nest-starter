@@ -1,4 +1,4 @@
-import { IsOptional, IsPort, IsUrl } from 'class-validator'
+import { IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
 
 export class EnvironmentVariables {
   @IsPort()
@@ -10,4 +10,7 @@ export class EnvironmentVariables {
     require_tld: false
   })
   DATABASE_URL: string
+
+  @IsString()
+  JWT_SECRET: string
 }

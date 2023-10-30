@@ -17,12 +17,16 @@ export class PrettyResult<T> implements Result<T> {
   }
 
   static success<TData>(data: TData, options?: RequiredMessageOptionalStatusCode) {
-    return new PrettyResult<TData>({
+    const result = new PrettyResult<TData>({
       statusCode: 200,
       message: '请求成功',
       ...options,
       data
     })
+    return {
+      __pretty__: true,
+      ...result
+    }
   }
 
   static failed<TData>(data: TData, options?: RequiredMessageOptionalStatusCode) {
