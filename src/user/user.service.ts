@@ -47,7 +47,7 @@ export class UserService {
       where: { name, is_del: false }
     })
     if (!user) return false
-    return user
+    return new UserEntity(user)
   }
 
   async findOne(id: number) {

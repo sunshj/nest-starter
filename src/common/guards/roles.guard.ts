@@ -1,9 +1,10 @@
-import { CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common'
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common'
 import { $Enums } from '@prisma/client'
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 import { ROLES_KEY } from '../decorators'
 
+@Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
   canActivate(context: ExecutionContext): boolean | Promise<boolean> {
