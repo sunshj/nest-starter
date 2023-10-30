@@ -5,11 +5,22 @@ import { ResponseInterceptor } from './common/interceptors'
 import { AllExceptionFilter, PrismaExceptionFilter } from './common/filters'
 import { ConfigService } from '@nestjs/config'
 import { EnvironmentVariables } from './common/env'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.enableCors()
+  app.setGlobalPrefix('api')
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true
+    })
+  )
   app.useGlobalInterceptors(new ResponseInterceptor())
   app.useGlobalFilters(new AllExceptionFilter(), new PrismaExceptionFilter())
+
   const config = app.get(ConfigService<EnvironmentVariables>)
   const port = config.get('PORT', { infer: true }) || 3000
   await app.listen(port, '0.0.0.0').then(async () => {
