@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common'
+import { PrettyResult } from './utils'
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!'
+  getHello() {
+    // return 'Hello World!'
+    /** or */
+    return PrettyResult.success('Hello World!', { message: 'OK' })
   }
 }
