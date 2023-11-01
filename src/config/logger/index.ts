@@ -5,10 +5,10 @@ import { Params } from 'nestjs-pino'
 import { timeFormat } from '~/utils'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModuleAsyncParams } from 'nestjs-pino/params'
-import { EnvironmentVariables } from '~/common/env'
+import { EnvironmentVariables } from '../env'
 
-const levelLogger = (level: Level): Params['pinoHttp'] =>
-  process.env.NODE_ENV === 'production'
+const levelLogger = (level: Level, env: string): Params['pinoHttp'] =>
+  env === 'production'
     ? {
         level,
         transport: {
@@ -31,7 +31,7 @@ const levelLogger = (level: Level): Params['pinoHttp'] =>
         redact: { paths: ['req', 'res'], remove: true }
       }
 
-export const loggerOptions: LoggerModuleAsyncParams = {
+export const loggerModuleAsyncParams: LoggerModuleAsyncParams = {
   imports: [ConfigModule],
   inject: [ConfigService],
   useFactory(configService: ConfigService<EnvironmentVariables>) {
@@ -50,11 +50,19 @@ export const loggerOptions: LoggerModuleAsyncParams = {
             return { level: label.toUpperCase() }
           }
         },
-        customSuccessMessage(req, res) {
+        customLogLevel(_req, res, err) {
+          if (res.statusCode >= 500 || err) return 'error'
+          if (res.statusCode >= 400) return 'warn'
+          return 'info'
+        },
+        customSuccessMessage(_req, res) {
           return res.statusMessage
         },
+        customErrorMessage(_req, _res, err) {
+          return err.message
+        },
         timestamp: stdTimeFunctions.isoTime,
-        ...levelLogger(configService.get('LOG_LEVEL') || 'info')
+        ...levelLogger(configService.get('LOG_LEVEL'), configService.get('NODE_ENV'))
       }
     }
   }

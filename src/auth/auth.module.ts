@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller'
 import { UserModule } from '~/user/user.module'
 import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { EnvironmentVariables } from '~/common/env'
+import { EnvironmentVariables } from '~/config/env'
 
 @Module({
   imports: [

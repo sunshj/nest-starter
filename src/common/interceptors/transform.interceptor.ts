@@ -9,14 +9,17 @@ interface ResData<T> {
 }
 
 @Injectable()
-export class ResponseInterceptor<T> implements NestInterceptor<T, ResData<T>> {
+export class TransformInterceptor<T> implements NestInterceptor<T, ResData<T>> {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<ResData<T>> {
     return next.handle().pipe(
-      map(data => {
-        const result = data.__pretty__ ? data : PrettyResult.success(data)
-        delete result.__pretty__
-        return result
-      })
+      map(data =>
+        data.__prettyRaw__
+          ? data.data
+          : {
+              ...(data.__pretty__ ? data : PrettyResult.success(data)),
+              __pretty__: undefined
+            }
+      )
     )
   }
 }

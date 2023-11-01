@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { ResponseInterceptor } from './common/interceptors'
+import { TransformInterceptor } from './common/interceptors'
 import { AllExceptionFilter, PrismaExceptionFilter } from './common/filters'
 import { ConfigService } from '@nestjs/config'
-import { EnvironmentVariables } from './common/env'
+import { EnvironmentVariables } from './config/env'
 import { ValidationPipe } from '@nestjs/common'
 import { join } from 'node:path'
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino'
@@ -22,7 +22,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true
     })
   )
-  app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
+  app.useGlobalInterceptors(new TransformInterceptor(), new LoggerErrorInterceptor())
   app.useGlobalFilters(new AllExceptionFilter(), new PrismaExceptionFilter())
 
   const config = app.get(ConfigService<EnvironmentVariables>)

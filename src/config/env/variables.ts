@@ -1,11 +1,19 @@
 import { IsEnum, IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
-import { LogLevel } from '~/common/env/enums'
+import { Environment, LogLevel } from './enums'
 import { Level } from 'pino'
 
 export class EnvironmentVariables {
+  @IsEnum(Environment)
+  @IsOptional()
+  NODE_ENV?: Environment = Environment.Development
+
   @IsPort()
   @IsOptional()
   PORT?: string
+
+  @IsEnum(LogLevel)
+  @IsOptional()
+  LOG_LEVEL?: Level = LogLevel.info
 
   @IsUrl({
     protocols: ['mysql'],
@@ -15,8 +23,4 @@ export class EnvironmentVariables {
 
   @IsString()
   JWT_SECRET: string
-
-  @IsEnum(LogLevel)
-  @IsOptional()
-  LOG_LEVEL?: Level
 }
