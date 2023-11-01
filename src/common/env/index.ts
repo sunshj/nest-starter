@@ -4,6 +4,7 @@ import { EnvironmentVariables } from './variables'
 import { colors } from '~/utils'
 
 export * from './variables'
+export * from './enums'
 
 export function validate(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvironmentVariables, config, {

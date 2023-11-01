@@ -1,4 +1,6 @@
-import { IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
+import { IsEnum, IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
+import { LogLevel } from '~/common/env/enums'
+import { Level } from 'pino'
 
 export class EnvironmentVariables {
   @IsPort()
@@ -13,4 +15,8 @@ export class EnvironmentVariables {
 
   @IsString()
   JWT_SECRET: string
+
+  @IsEnum(LogLevel)
+  @IsOptional()
+  LOG_LEVEL?: Level
 }

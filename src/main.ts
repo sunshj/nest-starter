@@ -7,9 +7,11 @@ import { ConfigService } from '@nestjs/config'
 import { EnvironmentVariables } from './common/env'
 import { ValidationPipe } from '@nestjs/common'
 import { join } from 'node:path'
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino'
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true })
+  app.useLogger(app.get(Logger))
   app.enableCors()
   app.useStaticAssets(join(__dirname, '../public'))
   app.setGlobalPrefix('api')
@@ -20,7 +22,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true
     })
   )
-  app.useGlobalInterceptors(new ResponseInterceptor())
+  app.useGlobalInterceptors(new ResponseInterceptor(), new LoggerErrorInterceptor())
   app.useGlobalFilters(new AllExceptionFilter(), new PrismaExceptionFilter())
 
   const config = app.get(ConfigService<EnvironmentVariables>)

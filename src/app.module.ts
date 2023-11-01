@@ -7,6 +7,8 @@ import { UserModule } from './user/user.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { AuthModule } from './auth/auth.module'
 import { UploadModule } from './upload/upload.module'
+import { LoggerModule } from 'nestjs-pino'
+import { loggerOptions } from '~/common/logger.config'
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { UploadModule } from './upload/upload.module'
       cache: true,
       validate
     }),
+    LoggerModule.forRootAsync(loggerOptions),
     UserModule,
     PrismaModule,
     AuthModule,
