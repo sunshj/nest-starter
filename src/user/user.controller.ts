@@ -15,10 +15,9 @@ import {
 import { UserService } from './user.service'
 import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto'
 import { Roles } from '~/common/decorators'
-import { AuthGuard } from '~/auth/auth.guard'
 import { RolesGuard } from '~/common/guards'
 
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
