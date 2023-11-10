@@ -56,10 +56,10 @@ export const loggerModuleAsyncParams: LoggerModuleAsyncParams = {
           return 'info'
         },
         customSuccessMessage(_req, res) {
-          return res.statusMessage
+          return `${res.statusCode} ${res.statusMessage}`
         },
         customErrorMessage(_req, _res, err) {
-          return err.message
+          return err.message.replace(/\n/g, '')
         },
         timestamp: stdTimeFunctions.isoTime,
         ...levelLogger(configService.get('LOG_LEVEL'), configService.get('NODE_ENV'))
