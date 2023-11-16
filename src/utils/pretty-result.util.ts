@@ -32,12 +32,4 @@ export class PrettyResult<T> implements Result<T> {
   static failed<TData>(data: TData, options?: RequiredMessageOptionalStatusCode) {
     return PrettyResult.success(data, { statusCode: 500, message: '请求失败', ...options })
   }
-
-  /**
-   * 发送原始数据，不做格式化，类似于 res.send()
-   * @param data
-   */
-  static send<TData>(data: TData) {
-    return { __prettyRaw__: true, data }
-  }
 }

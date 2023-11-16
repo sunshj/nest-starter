@@ -12,14 +12,10 @@ interface ResData<T> {
 export class TransformInterceptor<T> implements NestInterceptor<T, ResData<T>> {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<ResData<T>> {
     return next.handle().pipe(
-      map(data =>
-        data.__prettyRaw__
-          ? data.data
-          : {
-              ...(data.__pretty__ ? data : PrettyResult.success(data)),
-              __pretty__: undefined
-            }
-      )
+      map(data => ({
+        ...(data.__pretty__ ? data : PrettyResult.success(data)),
+        __pretty__: undefined
+      }))
     )
   }
 }
