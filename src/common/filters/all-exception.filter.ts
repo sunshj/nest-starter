@@ -1,5 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
 import { Request, Response } from 'express'
+import { isNotEmptyObject } from 'class-validator'
 
 interface ExceptionResponseBody {
   statusCode: number
@@ -11,13 +12,14 @@ interface ExceptionResponseBody {
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const req = ctx.getRequest<Request>()
     const res = ctx.getResponse<Response>()
+
     const responseBody: ExceptionResponseBody = {
       statusCode: 500,
-      error: exception,
+      error: isNotEmptyObject(exception) ? exception : exception.stack,
       message: 'Internal Server Error',
       time: new Date().toISOString(),
       path: req.originalUrl

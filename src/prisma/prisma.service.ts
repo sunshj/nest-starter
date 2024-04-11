@@ -1,7 +1,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { PrismaClient } from '@prisma/client'
 import { PrismaClientOptions } from '@prisma/client/runtime/library'
-import { colors } from '~/utils'
+import { colors } from 'consola/utils'
 
 @Injectable()
 export class PrismaService
