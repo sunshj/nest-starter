@@ -6,10 +6,10 @@ import {
   Post,
   UseInterceptors
 } from '@nestjs/common'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Public, User } from '~/common/decorators'
 import { AuthService } from './auth.service'
 import { SignInDto, SignUpDto } from './dto'
-import { Public, User } from '~/common/decorators'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 
 @ApiTags('auth')
 @UseInterceptors(ClassSerializerInterceptor)

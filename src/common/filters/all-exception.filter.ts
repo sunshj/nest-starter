@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
-import { Request, Response } from 'express'
 import { isNotEmptyObject } from 'class-validator'
+import { Request, Response } from 'express'
 
 interface ExceptionResponseBody {
   statusCode: number
@@ -29,8 +29,8 @@ export class AllExceptionFilter implements ExceptionFilter {
       responseBody.statusCode = exception.getStatus()
       const { message, error } = exception.getResponse() as { message: any; error: any }
       responseBody.message =
-        (message && (Array.isArray(message) ? message : message.replace(/\n/g, ''))) ||
-        exception.message.replace(/\n/g, '')
+        (message && (Array.isArray(message) ? message : message.replaceAll('\n', ''))) ||
+        exception.message.replaceAll('\n', '')
       responseBody.error = error
     }
 

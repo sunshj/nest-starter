@@ -1,22 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
-  Delete,
-  Put,
-  ParseIntPipe,
-  UseInterceptors,
   ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
   Query,
-  UseGuards
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common'
-import { UserService } from './user.service'
-import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Roles } from '~/common/decorators'
 import { RolesGuard } from '~/common/guards'
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto'
+import { UserService } from './user.service'
 
 @ApiTags('user')
 @ApiBearerAuth()

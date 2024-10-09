@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { SignInDto, SignUpDto } from './dto'
-import { UserService } from '~/user/user.service'
 import { JwtService } from '@nestjs/jwt'
-import { PrettyResult } from '~/utils'
 import { compare } from 'bcryptjs'
+import { UserService } from '~/user/user.service'
+import { PrettyResult } from '~/utils'
+import { SignInDto, SignUpDto } from './dto'
 
 @Injectable()
 export class AuthService {

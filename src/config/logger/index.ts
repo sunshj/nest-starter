@@ -1,14 +1,14 @@
-import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { Level, stdTimeFunctions } from 'pino'
-import { Params } from 'nestjs-pino'
-import { timeFormat } from '~/utils'
+import { join } from 'node:path'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { Params } from 'nestjs-pino'
 import { LoggerModuleAsyncParams } from 'nestjs-pino/params'
+import { Level, stdTimeFunctions } from 'pino'
+import { timeFormat } from '~/utils'
 import { EnvironmentVariables } from '../env'
 
-const levelLogger = (level: Level, env: string): Params['pinoHttp'] =>
-  env === 'production'
+function levelLogger(level: Level, env: string): Params['pinoHttp'] {
+  return env === 'production'
     ? {
         level,
         transport: {
@@ -30,6 +30,7 @@ const levelLogger = (level: Level, env: string): Params['pinoHttp'] =>
         },
         redact: { paths: ['req', 'res'], remove: true }
       }
+}
 
 export const loggerModuleAsyncParams: LoggerModuleAsyncParams = {
   imports: [ConfigModule],
@@ -59,7 +60,7 @@ export const loggerModuleAsyncParams: LoggerModuleAsyncParams = {
           return `${res.statusCode} ${res.statusMessage}`
         },
         customErrorMessage(_req, _res, err) {
-          return err.message.replace(/\n/g, '')
+          return err.message.replaceAll('\n', '')
         },
         timestamp: stdTimeFunctions.isoTime,
         ...levelLogger(configService.get('LOG_LEVEL'), configService.get('NODE_ENV'))

@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
-import { Request, Response } from 'express'
-import { JwtService } from '@nestjs/jwt'
-import { UserService } from '~/user/user.service'
 import { Reflector } from '@nestjs/core'
+import { JwtService } from '@nestjs/jwt'
+import { Request, Response } from 'express'
 import { IS_PUBLIC_KEY } from '~/common/decorators'
+import { UserService } from '~/user/user.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
       req.user = newPayload
       const newToken = await this.jwtService.signAsync(newPayload)
       res.setHeader('Authorization', `Bearer ${newToken}`)
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('无效token')
     }
     return true

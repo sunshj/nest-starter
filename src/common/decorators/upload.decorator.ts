@@ -16,7 +16,7 @@ export function Upload(field = 'file', options: MulterModuleOptions) {
 
 export function UploadImage(field = 'image') {
   return Upload(field, {
-    limits: { fileSize: Math.pow(1024, 2) * 2 },
+    limits: { fileSize: 1024 ** 2 * 2 },
     fileFilter: fileMimetypeFilter('image')
   })
 }

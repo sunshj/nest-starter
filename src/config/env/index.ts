@@ -1,7 +1,7 @@
 import { plainToInstance } from 'class-transformer'
 import { validateSync } from 'class-validator'
-import { EnvironmentVariables } from './variables'
 import { colors } from 'consola/utils'
+import { EnvironmentVariables } from './variables'
 
 export * from './variables'
 export * from './enums'

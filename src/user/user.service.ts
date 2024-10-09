@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto'
-import { PrismaService } from '~/prisma/prisma.service'
 import { hash } from 'bcryptjs'
+import { PrismaService } from '~/prisma/prisma.service'
+import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto'
 import { UserEntity } from './entities/user.entity'
 
 @Injectable()

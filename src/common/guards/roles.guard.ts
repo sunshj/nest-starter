@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common'
-import { $Enums } from '@prisma/client'
 import { Reflector } from '@nestjs/core'
+import { $Enums } from '@prisma/client'
 import { Request } from 'express'
 import { ROLES_KEY } from '../decorators'
 
@@ -15,7 +15,7 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) return true
     try {
       const { user } = context.switchToHttp().getRequest<Request>()
-      const isAllowed = requiredRoles.some(role => user.role === role)
+      const isAllowed = requiredRoles.includes(user.role)
       if (!isAllowed) throw new ForbiddenException('权限不足')
       return true
     } catch (error) {

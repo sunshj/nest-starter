@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
-import { Observable, map } from 'rxjs'
+import { map, Observable } from 'rxjs'
 import { PrettyResult } from '~/utils'
 
 interface ResData<T> {

@@ -5,7 +5,7 @@ dayjs.locale('zh-cn')
 export function timeFormat(datetime: string | number, fmt = 'YYYY-MM-DD HH:mm:ss') {
   const time =
     typeof datetime === 'number'
-      ? parseInt(datetime.toString().padEnd(13, '0'), 10)
+      ? Number.parseInt(datetime.toString().padEnd(13, '0'), 10)
       : Date.parse(datetime)
 
   return dayjs(time).format(fmt)

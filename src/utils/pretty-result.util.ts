@@ -4,7 +4,7 @@ interface Result<T> {
   data: T
 }
 
-type RequiredMessageOptionalStatusCode = DeepUnpacked<{ message: string; statusCode?: number }>
+type RequiredMessageOptionalStatusCode = { message: string; statusCode?: number }
 
 export class PrettyResult<T> implements Result<T> {
   statusCode: number

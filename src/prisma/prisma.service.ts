@@ -21,7 +21,7 @@ export class PrismaService
   }
 
   private getOriginalQuerySql(query: string, params: any[]) {
-    return query.replace(/\?/g, () =>
+    return query.replaceAll('?', () =>
       typeof params[0] === 'string' ? `'${params.shift() as string}'` : params.shift()
     )
   }

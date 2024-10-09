@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
-import { Environment, LogLevel } from './enums'
 import { Level } from 'pino'
+import { Environment, LogLevel } from './enums'
 
 export class EnvironmentVariables {
   @IsEnum(Environment)
