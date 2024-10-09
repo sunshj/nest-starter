@@ -23,14 +23,20 @@ export class AuthService {
   async generateAccessToken(payload: UserPayload) {
     return await this.jwtService.signAsync(
       { ...payload, t: 'a' },
-      { expiresIn: 60, secret: this.config.get('ACCESS_TOKEN_SECRET') }
+      {
+        expiresIn: 60 * 20 /** 20min */,
+        secret: this.config.get('ACCESS_TOKEN_SECRET')
+      }
     )
   }
 
   async generateRefreshToken(payload: UserPayload) {
     return await this.jwtService.signAsync(
       { ...payload, t: 'r' },
-      { expiresIn: 60 * 2, secret: this.config.get('REFRESH_TOKEN_SECRET') }
+      {
+        expiresIn: 60 * 60 * 24 * 30 /** 30days */,
+        secret: this.config.get('REFRESH_TOKEN_SECRET')
+      }
     )
   }
 
