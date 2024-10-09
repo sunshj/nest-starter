@@ -1,15 +1,16 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Reflector } from '@nestjs/core'
-import { JwtService } from '@nestjs/jwt'
-import { Request, Response } from 'express'
-import { IS_PUBLIC_KEY } from '~/common/decorators'
-import { UserService } from '~/user/user.service'
+import { Request } from 'express'
+import { IS_PUBLIC_KEY, IS_REFRESH_TOKEN } from '~/common/decorators'
+import { EnvironmentVariables } from '~/config/env'
+import { AuthService } from './auth.service'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private jwtService: JwtService,
-    private userService: UserService,
+    private config: ConfigService<EnvironmentVariables>,
+    private authService: AuthService,
     private reflector: Reflector
   ) {}
 
@@ -20,25 +21,22 @@ export class AuthGuard implements CanActivate {
     ])
     if (isPublic) return true
 
-    const req = context.switchToHttp().getRequest<Request>()
-    const res = context.switchToHttp().getResponse<Response>()
-    const token = this.extractTokenFromHeader(req)
-    if (!token) throw new UnauthorizedException('token不存在')
-    try {
-      const payload: UserPayload = await this.jwtService.verifyAsync(token)
-      const { name, role } = await this.userService.findOne(payload.sub)
-      const newPayload: UserPayload = { sub: payload.sub, username: name, role }
-      req.user = newPayload
-      const newToken = await this.jwtService.signAsync(newPayload)
-      res.setHeader('Authorization', `Bearer ${newToken}`)
-    } catch {
-      throw new UnauthorizedException('无效token')
-    }
-    return true
-  }
+    const isRefreshToken = this.reflector.getAllAndOverride<boolean>(IS_REFRESH_TOKEN, [
+      context.getHandler(),
+      context.getClass()
+    ])
 
-  private extractTokenFromHeader(request: Request) {
-    const [type, token] = request.headers.authorization?.split(' ') ?? []
-    return type === 'Bearer' ? token : undefined
+    const req = context.switchToHttp().getRequest<Request>()
+    const token = this.authService.extractTokenFromHeader(req)
+    if (!token) throw new UnauthorizedException('token not found')
+    const payload = await this.authService.verifyToken(
+      token,
+      this.config.get(isRefreshToken ? 'REFRESH_TOKEN_SECRET' : 'ACCESS_TOKEN_SECRET')
+    )
+
+    if (!payload) throw new UnauthorizedException('invalid token')
+    req.user = payload
+
+    return true
   }
 }

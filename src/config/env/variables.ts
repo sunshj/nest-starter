@@ -22,5 +22,8 @@ export class EnvironmentVariables {
   DATABASE_URL: string
 
   @IsString()
-  JWT_SECRET: string
+  ACCESS_TOKEN_SECRET: string
+
+  @IsString()
+  REFRESH_TOKEN_SECRET: string
 }

@@ -10,10 +10,13 @@ function fileMimetypeFilter(...mimes: string[]): MulterModuleOptions['fileFilter
     }
   }
 }
+
+// this decorator for file upload
 export function Upload(field = 'file', options: MulterModuleOptions) {
   return applyDecorators(UseInterceptors(FileInterceptor(field, options)))
 }
 
+// this decorator for image upload
 export function UploadImage(field = 'image') {
   return Upload(field, {
     limits: { fileSize: 1024 ** 2 * 2 },
