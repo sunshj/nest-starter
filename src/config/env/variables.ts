@@ -5,7 +5,7 @@ import { Environment, LogLevel } from './enums'
 export class EnvironmentVariables {
   @IsEnum(Environment)
   @IsOptional()
-  NODE_ENV?: Environment = Environment.Development
+  NODE_ENV?: Environment
 
   @IsPort()
   @IsOptional()
