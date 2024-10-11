@@ -29,7 +29,7 @@ export class PrettyResult<T> implements Result<T> {
     }
   }
 
-  static failed<TData>(data: TData, options?: RequiredMessageOptionalStatusCode) {
-    return PrettyResult.success(data, { statusCode: 500, message: '请求失败', ...options })
+  static failed(message: string) {
+    return PrettyResult.success(null, { statusCode: 500, message })
   }
 }

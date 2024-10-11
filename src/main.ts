@@ -6,7 +6,11 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { Logger, LoggerErrorInterceptor } from 'nestjs-pino'
 import { AppModule } from './app.module'
-import { AllExceptionFilter, PrismaExceptionFilter } from './common/filters'
+import {
+  AllExceptionFilter,
+  PrismaExceptionFilter,
+  ValidationExceptionFilter
+} from './common/filters'
 import { TransformInterceptor } from './common/interceptors'
 import { EnvironmentVariables } from './config/env'
 
@@ -40,7 +44,11 @@ async function bootstrap() {
     })
   )
   app.useGlobalInterceptors(new TransformInterceptor(), new LoggerErrorInterceptor())
-  app.useGlobalFilters(new AllExceptionFilter(), new PrismaExceptionFilter())
+  app.useGlobalFilters(
+    new AllExceptionFilter(),
+    new PrismaExceptionFilter(),
+    new ValidationExceptionFilter()
+  )
 
   const config = app.get(ConfigService<EnvironmentVariables>)
   const port = config.get('PORT', { infer: true }) || 3000

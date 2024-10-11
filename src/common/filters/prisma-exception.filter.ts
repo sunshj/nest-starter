@@ -12,7 +12,6 @@ export class PrismaExceptionFilter implements ExceptionFilter {
 
     res.status(500).json({
       statusCode: 500,
-      error: exception,
       message,
       time: new Date().toISOString(),
       path: req.originalUrl
